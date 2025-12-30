@@ -1,4 +1,4 @@
-package com.szl.szlx23api.entity;
+package com.szl.szlx23api.dao.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -21,17 +22,17 @@ import java.time.OffsetDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @Table(name = "blog_post_views")
-public class BlogPostViews implements Serializable {
+public class BlogPostView implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id", nullable = false)
-    private String id;
+    private UUID id;
 
     @Column(name = "post_id")
-    private String postId;
+    private UUID postId;
 
     @Column(name = "ip_address")
     private String ipAddress;

@@ -1,4 +1,4 @@
-package com.szl.szlx23api.entity;
+package com.szl.szlx23api.dao.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 @Entity
 @Getter
@@ -19,18 +20,23 @@ import java.io.Serializable;
 @ToString
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "blog_post_tags")
-public class BlogPostTags implements Serializable {
+@Table(name = "blog_tags")
+public class BlogTag implements Serializable {
 
     @Serial
-    @Id
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(name = "post_id", nullable = false)
-    private String postId;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "tag_id", nullable = false)
-    private Long tagId;
+    @Column(name = "slug", nullable = false)
+    private String slug;
+
+    @Column(name = "created_at")
+    private OffsetDateTime createdAt;
 
 }
