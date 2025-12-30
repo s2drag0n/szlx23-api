@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 @Entity
 @Getter
@@ -19,17 +20,26 @@ import java.io.Serializable;
 @ToString
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "post_tags")
-public class PostTags implements Serializable {
+@Table(name = "blog_post_views")
+public class BlogPostViews implements Serializable {
 
     @Serial
-    @Id
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "post_id", nullable = false)
+    @Id
+    @Column(name = "id", nullable = false)
+    private String id;
+
+    @Column(name = "post_id")
     private String postId;
 
-    @Column(name = "tag_id", nullable = false)
-    private Long tagId;
+    @Column(name = "ip_address")
+    private String ipAddress;
+
+    @Column(name = "user_agent")
+    private String userAgent;
+
+    @Column(name = "viewed_at")
+    private OffsetDateTime viewedAt;
 
 }

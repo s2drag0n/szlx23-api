@@ -20,8 +20,8 @@ import java.time.OffsetDateTime;
 @ToString
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "posts")
-public class Posts implements Serializable {
+@Table(name = "blog_posts")
+public class BlogPosts implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

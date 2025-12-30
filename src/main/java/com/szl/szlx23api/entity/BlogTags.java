@@ -20,26 +20,23 @@ import java.time.OffsetDateTime;
 @ToString
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "post_views")
-public class PostViews implements Serializable {
+@Table(name = "blog_tags")
+public class BlogTags implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id", nullable = false)
-    private String id;
+    private Long id;
 
-    @Column(name = "post_id")
-    private String postId;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "ip_address")
-    private String ipAddress;
+    @Column(name = "slug", nullable = false)
+    private String slug;
 
-    @Column(name = "user_agent")
-    private String userAgent;
-
-    @Column(name = "viewed_at")
-    private OffsetDateTime viewedAt;
+    @Column(name = "created_at")
+    private OffsetDateTime createdAt;
 
 }

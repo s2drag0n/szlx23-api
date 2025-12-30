@@ -1,9 +1,9 @@
 package com.szl.szlx23api.repository;
 
-import com.szl.szlx23api.entity.Comments;
+import com.szl.szlx23api.entity.BlogPostViews;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface CommentsRepository extends JpaRepository<Comments, String>, JpaSpecificationExecutor<Comments> {
+public interface BlogPostViewsRepository extends JpaRepository<BlogPostViews, String>, JpaSpecificationExecutor<BlogPostViews> {
 
 }
