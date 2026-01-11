@@ -1,17 +1,13 @@
 package com.szl.szlx23api.blog.service;
 
-import com.szl.szlx23api.blog.dto.PostCategoryDto;
-import com.szl.szlx23api.blog.dto.PostDto;
-import com.szl.szlx23api.blog.dto.PostListDto;
-import com.szl.szlx23api.blog.dto.PostTagDto;
-import org.springframework.data.domain.Page;
+import com.szl.szlx23api.blog.dto.*;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface PostService {
 
-    Page<PostListDto> searchPosts(String categorySlug, List<String> tagSlugs, String keyword, Pageable pageable);
+    PageDto<PostListDto> searchPosts(String categorySlug, List<String> tagSlugs, String keyword, Pageable pageable);
 
     PostDto findBySlug(String slug);
 

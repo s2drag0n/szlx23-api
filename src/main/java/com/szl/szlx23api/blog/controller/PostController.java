@@ -1,13 +1,9 @@
 package com.szl.szlx23api.blog.controller;
 
-import com.szl.szlx23api.blog.dto.PostCategoryDto;
-import com.szl.szlx23api.blog.dto.PostDto;
-import com.szl.szlx23api.blog.dto.PostListDto;
-import com.szl.szlx23api.blog.dto.PostTagDto;
+import com.szl.szlx23api.blog.dto.*;
 import com.szl.szlx23api.blog.service.PostService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +18,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public Page<PostListDto> searchPosts(
+    public PageDto<PostListDto> searchPosts(
             @RequestParam(required = false) String categorySlug,
             @RequestParam(required = false) List<String> tagSlugs,
             @RequestParam(required = false) String keyword,

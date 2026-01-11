@@ -55,38 +55,28 @@ CREATE OR REPLACE FUNCTION public.update_post_search_vector()
     RETURNS trigger
     LANGUAGE plpgsql
 AS $$
+DECLARE
+    -- 预处理后的文本（中文加空格）
+    processed_title TEXT := regexp_replace(coalesce(NEW.title, ''), '([\u4e00-\u9fff])', '\1 ', 'g');
+    processed_excerpt TEXT := regexp_replace(coalesce(NEW.excerpt, ''), '([\u4e00-\u9fff])', '\1 ', 'g');
+    processed_content TEXT := regexp_replace(coalesce(NEW.content, ''), '([\u4e00-\u9fff])', '\1 ', 'g');
 BEGIN
+    -- 叠加两种配置：
+    -- 1. 'simple' 处理：保证了中文分词和英文精确匹配
+    -- 2. 'english' 处理：保证了英文的词干提取（如 running -> run）
     NEW.search_vector :=
-            setweight(
-                    to_tsvector(
-                            'simple',
-                            regexp_replace(coalesce(NEW.title, ''),
-                                           '([\u4e00-\u9fff])',
-                                           '\1 ',
-                                           'g')
-                    ),
-                    'A'
-            ) ||
-            setweight(
-                    to_tsvector(
-                            'simple',
-                            regexp_replace(coalesce(NEW.excerpt, ''),
-                                           '([\u4e00-\u9fff])',
-                                           '\1 ',
-                                           'g')
-                    ),
-                    'B'
-            ) ||
-            setweight(
-                    to_tsvector(
-                            'simple',
-                            regexp_replace(coalesce(NEW.content, ''),
-                                           '([\u4e00-\u9fff])',
-                                           '\1 ',
-                                           'g')
-                    ),
-                    'C'
-            );
+            -- Title (权重 A)
+        setweight(to_tsvector('simple', processed_title), 'A') ||
+        setweight(to_tsvector('english', NEW.title), 'A') ||
+
+            -- Excerpt (权重 B)
+        setweight(to_tsvector('simple', processed_excerpt), 'B') ||
+        setweight(to_tsvector('english', NEW.excerpt), 'B') ||
+
+            -- Content (权重 C)
+        setweight(to_tsvector('simple', processed_content), 'C') ||
+        setweight(to_tsvector('english', NEW.content), 'C');
+
     RETURN NEW;
 END;
 $$;
@@ -143,7 +133,7 @@ BEGIN
         RETURN OLD;
     END IF;
 END;
-$$;LANGUAGE plpgsql
+$$LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION fn_update_published_time()
     RETURNS TRIGGER AS $$
@@ -159,6 +149,18 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION fts_match(ts tsvector, query_text text)
+    RETURNS boolean AS $$
+BEGIN
+    -- 使用 to_tsquery 才能识别我们传进去的 :* 和 &
+    -- 'simple' 配置与你 Trigger 中的配置保持一致
+    RETURN ts @@ to_tsquery('simple', query_text);
+EXCEPTION WHEN OTHERS THEN
+    -- 如果生成的查询语法有问题（比如用户输了特殊字符），降级到普通匹配
+    RETURN ts @@ plainto_tsquery('simple', query_text);
+END;
+$$ LANGUAGE plpgsql IMMUTABLE;
 
 -- ---------- tables ----------
 CREATE TABLE public.post_category (
