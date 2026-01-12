@@ -39,7 +39,7 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
                       regexp_replace(CAST(:searchTerm AS text), '([\\u4e00-\\u9fff])', '\\1 ', 'g')
                   )
               )
-            ORDER BY p.published_time DESC
+            ORDER BY p.publish_time DESC
             """,
             countQuery = """
                     SELECT count(*) FROM post p
@@ -70,7 +70,7 @@ public interface PostRepository extends JpaRepository<Post, UUID>, JpaSpecificat
     Post findBySlug(String slug);
 
     // 获取加精文章
-    List<Post> findByFeaturedTrueAndStatusOrderByPublishedTimeDesc(Integer status);
+    List<Post> findByFeaturedTrueAndStatusOrderByPublishTimeDesc(Integer status);
 
     // 增加阅读量（原子操作）
     @Modifying

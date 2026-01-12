@@ -106,7 +106,7 @@ public class PostServiceImpl implements PostService {
             }
 
             // 默认按发布时间倒序 (如果 query 对象允许)
-            query.orderBy(cb.desc(root.get("publishedTime")));
+            query.orderBy(cb.desc(root.get("publishTime")));
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };

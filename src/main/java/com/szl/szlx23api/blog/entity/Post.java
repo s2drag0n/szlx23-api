@@ -57,8 +57,8 @@ public class Post {
     )
     private Set<PostTag> tags = new HashSet<>();
 
-    @Column(name = "published_time", insertable = false, updatable = false)
-    private OffsetDateTime publishedTime;
+    @Column(name = "publish_time", insertable = false, updatable = false)
+    private OffsetDateTime publishTime;
 
     @Column(name = "create_time", nullable = false, updatable = false, insertable = false)
     private OffsetDateTime createTime;

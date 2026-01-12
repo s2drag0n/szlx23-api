@@ -13,7 +13,7 @@ public record PostDto(
         String coverImage,
         Long viewCount,
         Integer readTime,
-        OffsetDateTime publishedTime,
+        OffsetDateTime publishTime,
         String categoryName,
         List<String> tagNames,
         String content
